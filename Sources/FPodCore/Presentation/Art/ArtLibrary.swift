@@ -63,7 +63,7 @@ enum UIArt {
             shapes.append(Shape(.rect(r, radius: 18), fill: Palette.paper, shadow: true))
             shapes.append(Shape(.rect(Rect(22, 0, max(0, w - 44), 4), radius: 2), fill: Palette.turquoise.alpha(0.55)))
         case .chip:
-            shapes.append(Shape(.rect(r, radius: min(h / 2, 22)), fill: Palette.paper.alpha(0.96), shadow: true))
+            shapes.append(Shape(.rect(r, radius: h / 2), fill: Palette.paper.alpha(0.96), shadow: true))
         case .dark:
             shapes.append(Shape(.rect(r, radius: 12), fill: Palette.navy, shadow: true))
         case .toast:
@@ -81,7 +81,12 @@ enum UIArt {
         case .paperLine:
             shapes.append(Shape(.rect(r, radius: 0), fill: Palette.slate.alpha(0.18)))
         }
-        return Drawing(size: Vec2(w, h), anchor: Vec2(0, 0), shapes: shapes, shadowOffset: Vec2(1.5, 2.5), shadowBlur: 3)
+        if style == .card || style == .sheet || style == .chip || style == .toast {
+            let rimRadius = style == .sheet ? 18.0 : (style == .card ? 14.0 : h / 2)
+            shapes.append(Shape(.rect(r.insetBy(0.7), radius: max(0, rimRadius - 0.7)),
+                                fill: nil, stroke: Palette.white.alpha(0.55), lineWidth: 0.8))
+        }
+        return Drawing(size: Vec2(w, h), anchor: Vec2(0, 0), shapes: shapes, shadowOffset: Vec2(1.2, 2), shadowBlur: 2.2)
     }
 
     static func button(_ w: Double, _ h: Double, _ style: ButtonStyle) -> Drawing {
@@ -91,9 +96,11 @@ enum UIArt {
         switch style {
         case .round:
             s.append(Shape(.ellipse(r), fill: Palette.paper, shadow: true))
+            s.append(Shape(.ellipse(r.insetBy(0.9)), fill: nil, stroke: Palette.white.alpha(0.8), lineWidth: 1.2))
         case .roundLarge:
             s.append(Shape(.ellipse(r), fill: Palette.paper, shadow: true))
             s.append(Shape(.ellipse(r.insetBy(3)), fill: nil, stroke: Palette.turquoise, lineWidth: 3))
+            s.append(Shape(.ellipse(r.insetBy(5.4)), fill: nil, stroke: Palette.white, lineWidth: 1.2))
         case .pill:
             s.append(Shape(.rect(r, radius: round), fill: Palette.paper, shadow: true))
         case .primary:
@@ -104,7 +111,8 @@ enum UIArt {
             s.append(Shape(.ellipse(r), fill: Palette.turquoise.darker(0.12), shadow: true))
         case .toggleOff:
             s.append(Shape(.ellipse(r), fill: Palette.paper, shadow: true))
-            s.append(Shape(.ellipse(r.insetBy(2)), fill: nil, stroke: Palette.blueGray, lineWidth: 2))
+            s.append(Shape(.ellipse(r.insetBy(2.2)), fill: nil, stroke: Palette.blueGray, lineWidth: 1.6))
+            s.append(Shape(.ellipse(r.insetBy(4)), fill: nil, stroke: Palette.white, lineWidth: 1.1))
         case .tab:
             s.append(Shape(.rect(r, radius: 10), fill: Palette.blueGray.alpha(0.35)))
         case .tabActive:
@@ -123,6 +131,7 @@ enum UIArt {
 
     static func badge(_ icon: Icon, size: Double, bg: RGBA, fg: RGBA) -> Drawing {
         var s: [Shape] = [Shape(.ellipse(Rect(0, 0, size, size)), fill: bg, shadow: true)]
+        s.append(Shape(.ellipse(Rect(0.7, 0.7, size - 1.4, size - 1.4)), fill: nil, stroke: Palette.white.alpha(0.5), lineWidth: 0.8))
         let inner = IconArt.draw(icon, size: size * 0.62, color: fg)
         for var sh in inner.shapes { sh.geom = offset(sh.geom, Vec2(size * 0.19, size * 0.19)); s.append(sh) }
         return Drawing(size: Vec2(size, size), anchor: Vec2(0, 0), shapes: s, shadowOffset: Vec2(1, 1.6), shadowBlur: 1.5)
@@ -140,7 +149,7 @@ enum UIArt {
         s.append(Shape(.rect(body, radius: h * 0.42), fill: Palette.paper, stroke: alert ? Palette.coral : nil, lineWidth: alert ? 2 : 0, shadow: true))
         s.append(Shape(.poly([Vec2(w / 2 - h * 0.18, h - 1), Vec2(w / 2, h + h * 0.32), Vec2(w / 2 + h * 0.18, h - 1)]), fill: Palette.paper, shadow: false))
         for (k, ic) in icons.enumerated() {
-            let color: RGBA = (ic == .exclaim || ic == .stop) ? Palette.coral : Palette.ink
+            let color: RGBA = (ic == .exclaim || ic == .stop) ? Palette.coral : (ic == .zzz ? Palette.navy : Palette.ink)
             let d = IconArt.draw(ic, size: isz, color: color)
             let ox = pad + Double(k) * (isz + pad * 0.5)
             for var sh in d.shapes { sh.geom = offset(sh.geom, Vec2(ox, pad)); s.append(sh) }
@@ -215,7 +224,12 @@ enum UIArt {
             p.circle(0.5, 0.5, 0.08, fill: Palette.navy.alpha(0.7))
             return Drawing(size: Vec2(T, T), anchor: Vec2(0.5, 0.5), shapes: p.shapes)
         case 1: // objective chevron
-            p.poly([(0.2, 0.1), (0.8, 0.1), (0.5, 0.6)], fill: Palette.ochre, shadow: true)
+            p.path([.move(Vec2(0.26, 0.1)), .line(Vec2(0.74, 0.1)),
+                    .quad(Vec2(0.81, 0.1), Vec2(0.77, 0.17)), .line(Vec2(0.55, 0.57)),
+                    .quad(Vec2(0.5, 0.65), Vec2(0.45, 0.57)), .line(Vec2(0.23, 0.17)),
+                    .quad(Vec2(0.19, 0.1), Vec2(0.26, 0.1)), .close],
+                   fill: Palette.ochre, stroke: Palette.ochre.darker(0.12), lw: 0.025, shadow: true)
+            p.line([(0.28, 0.13), (0.72, 0.13)], color: Palette.ochre.lighter(0.35), lw: 0.025)
             return Drawing(size: Vec2(T, T * 0.7), anchor: Vec2(0.5, 1.0), shapes: p.shapes)
         case 2: // search cue (flashlight wedge)
             p.wedge(0.1, 0.5, 0.9, -0.5, 0.5, fill: Palette.ochre.alpha(0.35))

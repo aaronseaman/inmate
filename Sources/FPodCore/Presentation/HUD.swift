@@ -23,8 +23,8 @@ extension Game {
         let schedR = Rect(safe.x + m, safe.y + m, schedW, 36)
         ui0.panel("sched", schedR, chipStyle)
         let fg: RGBA = chipStyle == .danger ? Palette.paper : Palette.ink
-        ui0.icon("sched.ic", schedIcon, center: Vec2(schedR.x + 20, schedR.midY), size: 20, color: fg)
-        ui0.text("sched.t", schedText, Vec2(schedR.x + 36, schedR.y + 9), size: 13, weight: .semibold, color: fg, width: schedW - 44)
+        ui0.icon("sched.ic", schedIcon, center: Vec2(schedR.x + 20, schedR.midY), size: 20, color: chipStyle == .danger ? fg : (schedIcon == .sun ? Palette.ochre : fg))
+        ui0.text("sched.t", schedText, Vec2(schedR.x + 36, schedR.y + 9), size: 13, weight: .bold, color: fg, width: schedW - 44)
         ui0.hit(schedR, .openJournal, label: "Schedule: \(schedText). Opens journal.", id: "sched")
         // --- Menu buttons (top-right) ---
         let bsz = 44.0
@@ -47,7 +47,7 @@ extension Game {
         let objR = Rect(objX, safe.y + m, objW, 36)
         ui0.panel("obj", objR, .chip)
         ui0.badge("obj.ic", obj.icon, center: Vec2(objR.x + 19, objR.midY), size: 26, bg: Palette.ochre, fg: Palette.paper)
-        ui0.text("obj.t", objText, Vec2(objR.x + 38, objR.y + 9), size: 13, weight: .semibold, width: objW - 46)
+        ui0.text("obj.t", objText, Vec2(objR.x + 38, objR.y + 9), size: 13, weight: .bold, width: objW - 46)
         ui0.hit(objR, .openJournal, label: "Objective: \(obj.text)", id: "obj")
         // Off-screen arrow toward the objective.
         if let mk = obj.marker, let wp = markerPosition(mk) {
@@ -232,9 +232,9 @@ extension Game {
             let r = Rect(x, safe.maxY - m - h, w, h)
             ui0.panel("status", r, .chip)
             ui0.badge("st.watch", .eye, center: Vec2(r.x + 20, r.midY), size: 26, bg: watchColor, fg: Palette.paper)
-            ui0.text("st.watch.t", s.watch.short, Vec2(r.x + 37, r.y + 4), size: 11, weight: .semibold, color: Palette.inkSoft, width: 50)
+            ui0.text("st.watch.t", s.watch.short, Vec2(r.x + 37, r.y + 4), size: 11, weight: .semibold, color: Palette.ink, width: 50)
             ui0.text("st.cr", "\(s.credits) cr", Vec2(r.x + 37, r.y + 19), size: 12.5, weight: .bold, width: 52)
-            ui0.icon("st.energy", .energy, center: Vec2(r.x + 98, r.midY), size: 16, color: s.player.energy < 25 ? Palette.coral : Palette.slate)
+            ui0.icon("st.energy", .energy, center: Vec2(r.x + 98, r.midY), size: 16, color: s.player.energy < 25 ? Palette.coral : Palette.turquoise)
             ui0.text("st.energy.t", "\(Int(s.player.energy))", Vec2(r.x + 107, r.y + 12), size: 12, weight: .semibold, width: 30)
             ui0.icon("st.more", .arrowUp, center: Vec2(r.maxX - 14, r.midY), size: 12, color: Palette.slate)
             ui0.hit(r, .toggleStatus, label: "Status: watch \(s.watch.short), \(s.credits) credits, energy \(Int(s.player.energy)). Tap to expand.", id: "status")

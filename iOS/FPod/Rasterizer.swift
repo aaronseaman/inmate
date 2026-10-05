@@ -75,15 +75,49 @@ enum Rasterizer {
         }
     }
 
+    /// Articulated hair and accessories can extend past their logical pivot box.
+    /// Include control points as a conservative curve bound. Fixed top-left boxes
+    /// (especially map chunks) retain their clipping boundary.
+    static func overhang(_ d: Drawing) -> Double {
+        var margin = 0.0
+        for shape in d.shapes {
+            let stroke = shape.stroke == nil ? 0 : max(0, shape.lineWidth / 2)
+            margin = max(margin, stroke)
+            guard d.anchor != .zero else { continue }
+            let points: [Vec2]
+            switch shape.geom {
+            case .rect(let r, _), .ellipse(let r):
+                points = [Vec2(r.minX, r.minY), Vec2(r.maxX, r.maxY)]
+            case .poly(let p), .polyline(let p): points = p
+            case .path(let ops):
+                points = ops.flatMap { op -> [Vec2] in
+                    switch op {
+                    case .move(let p), .line(let p): return [p]
+                    case .quad(let c, let p): return [c, p]
+                    case .cubic(let a, let b, let p): return [a, b, p]
+                    case .close: return []
+                    }
+                }
+            case .text: points = []
+            }
+            for p in points {
+                let x = max(-p.x, p.x - d.size.x)
+                let y = max(-p.y, p.y - d.size.y)
+                margin = max(margin, max(0, max(x, y)) + stroke)
+            }
+        }
+        return margin
+    }
+
     static func render(_ d: Drawing, scale: CGFloat) -> RasterResult? {
-        let pad = CGFloat(max(abs(d.shadowOffset.x), abs(d.shadowOffset.y)) + d.shadowBlur * 2 + 1)
+        let pad = CGFloat(ceil(max(abs(d.shadowOffset.x), abs(d.shadowOffset.y)) + d.shadowBlur * 2 + 1 + overhang(d)))
         let w = CGFloat(max(1, d.size.x)), h = CGFloat(max(1, d.size.y))
         let full = CGSize(width: ceil(w + pad * 2), height: ceil(h + pad * 2))
         let format = UIGraphicsImageRendererFormat()
         format.scale = scale
         format.opaque = false
         let renderer = UIGraphicsImageRenderer(size: full, format: format)
-        let shadowColor = UIColor(red: 0.118, green: 0.173, blue: 0.208, alpha: 0.2).cgColor
+        let shadowColor = color(Palette.shadow).cgColor
         let image = renderer.image { rc in
             let ctx = rc.cgContext
             ctx.translateBy(x: pad, y: pad)
