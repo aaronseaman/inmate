@@ -10,17 +10,25 @@ enum PropArt {
         let vert = h > w
         switch o.kind {
         case .bunk:
-            p.rect(x + 0.06, y + 0.06, w - 0.12, h - 0.12, r: 0.1, fill: slate, shadow: true)
-            p.rect(x + 0.12, y + 0.12, w - 0.24, h - 0.24, r: 0.08, fill: Palette.ivory)
-            // Pillow at the head end, blanket over most of the mattress.
+            p.rect(x + 0.06, y + 0.06, w - 0.12, h - 0.12, r: 0.12, fill: slate, shadow: true)
+            p.rect(x + 0.1, y + 0.1, w - 0.2, h - 0.2, r: 0.1, fill: slate.lighter(0.18))
+            p.rect(x + 0.15, y + 0.14, w - 0.3, h - 0.28, r: 0.08, fill: Palette.ceramic)
+            // Orange cover, lighter folded edge and a plump white pillow.
             let headTop = o.facing != .up
             if vert {
-                p.rect(x + 0.18, headTop ? y + 0.18 : y + h - 0.5, w - 0.36, 0.3, r: 0.1, fill: paper)
-                p.rect(x + 0.12, headTop ? y + 0.6 : y + 0.12, w - 0.24, h - 0.72, r: 0.08, fill: Palette.tan.darker(0.05))
-                p.line([(x + 0.14, headTop ? y + 0.9 : y + h - 0.9), (x + w - 0.14, headTop ? y + 0.9 : y + h - 0.9)], color: Palette.tan.darker(0.25), lw: 0.04)
+                let by = headTop ? y + 0.62 : y + 0.17
+                let bh = h - 0.79
+                let py = headTop ? y + 0.2 : y + h - 0.51
+                p.rect(x + 0.17, by, w - 0.34, bh, r: 0.075, fill: Palette.blanket)
+                p.rect(x + 0.18, by + 0.03, w - 0.42, bh - 0.09, r: 0.06, fill: Palette.blanket.lighter(0.08))
+                p.rect(x + 0.17, headTop ? by : by + bh - 0.13, w - 0.34, 0.13, r: 0.025, fill: Palette.blanket.lighter(0.25))
+                p.rect(x + 0.19, py + 0.025, w - 0.38, 0.3, r: 0.075, fill: Palette.ceramicInset)
+                p.rect(x + 0.2, py, w - 0.4, 0.29, r: 0.075, fill: Palette.paper)
+                p.rect(x + 0.23, py + 0.02, w - 0.46, 0.06, r: 0.025, fill: Palette.white.alpha(0.7))
             } else {
-                p.rect(x + 0.18, y + 0.18, 0.3, h - 0.36, r: 0.1, fill: paper)
-                p.rect(x + 0.6, y + 0.12, w - 0.72, h - 0.24, r: 0.08, fill: Palette.tan.darker(0.05))
+                p.rect(x + 0.62, y + 0.17, w - 0.79, h - 0.34, r: 0.075, fill: Palette.blanket)
+                p.rect(x + 0.62, y + 0.17, 0.13, h - 0.34, r: 0.025, fill: Palette.blanket.lighter(0.25))
+                p.rect(x + 0.2, y + 0.2, 0.29, h - 0.4, r: 0.075, fill: Palette.paper)
             }
         case .bed:
             p.rect(x + 0.08, y + 0.08, w - 0.16, h - 0.16, r: 0.12, fill: metal, shadow: true)
@@ -68,17 +76,29 @@ enum PropArt {
                 }
             }
         case .locker:
-            p.rect(x + 0.1, y + 0.08, w - 0.2, h - 0.16, r: 0.06, fill: metal.darker(0.08), shadow: true)
-            for k in 0..<3 { p.line([(x + 0.25, y + 0.25 + Double(k) * 0.12), (x + 0.75, y + 0.25 + Double(k) * 0.12)], color: metal.darker(0.3), lw: 0.04) }
-            p.circle(x + 0.72, y + 0.68, 0.06, fill: Palette.ochre)
+            p.rect(x + 0.1, y + 0.08, w - 0.2, h - 0.16, r: 0.07, fill: slate.lighter(0.12), shadow: true)
+            p.rect(x + 0.15, y + 0.12, w - 0.3, h - 0.25, r: 0.045, fill: metal.darker(0.13))
+            p.rect(x + 0.17, y + 0.12, w - 0.34, 0.05, r: 0.02, fill: metal.lighter(0.12))
+            for k in 0..<3 {
+                let vy = y + 0.25 + Double(k) * 0.12
+                p.rect(x + 0.27, vy, w - 0.54, 0.035, r: 0.012, fill: slate)
+                p.rect(x + 0.27, vy + 0.035, w - 0.54, 0.018, fill: metal.lighter(0.12))
+            }
+            p.rect(x + w - 0.37, y + h - 0.33, 0.17, 0.055, r: 0.02, fill: Palette.ochre)
         case .toilet:
-            p.rect(x + 0.24, y + 0.1, 0.52, 0.24, r: 0.08, fill: metal.lighter(0.4), shadow: true)
-            p.oval(x + 0.22, y + 0.3, 0.56, 0.6, fill: metal.lighter(0.55), shadow: true)
-            p.oval(x + 0.32, y + 0.42, 0.36, 0.38, fill: Palette.blueGray)
+            p.rect(x + 0.25, y + 0.09, 0.5, 0.23, r: 0.07, fill: Palette.ceramicInset, shadow: true)
+            p.rect(x + 0.28, y + 0.1, 0.44, 0.16, r: 0.055, fill: Palette.ceramic)
+            p.oval(x + 0.22, y + 0.3, 0.56, 0.6, fill: Palette.ceramicInset, shadow: true)
+            p.oval(x + 0.23, y + 0.29, 0.54, 0.55, fill: Palette.ceramic)
+            p.oval(x + 0.32, y + 0.39, 0.36, 0.36, fill: Palette.ceramicInset)
+            p.oval(x + 0.26, y + 0.33, 0.48, 0.46, fill: nil, stroke: Palette.paper, lw: 0.055)
         case .sink:
-            p.rect(x + 0.1, y + 0.12, w - 0.2, h - 0.24, r: 0.16, fill: metal.lighter(0.5), shadow: true)
-            p.oval(x + 0.24, y + 0.28, w - 0.48, h - 0.5, fill: Palette.blueGray)
-            p.rect(x + w * 0.5 - 0.04, y + 0.14, 0.08, 0.18, r: 0.03, fill: slate)
+            p.rect(x + 0.11, y + 0.18, w - 0.22, h - 0.27, r: 0.16, fill: Palette.turquoise.darker(0.08), shadow: true)
+            p.rect(x + 0.1, y + 0.12, w - 0.2, h - 0.28, r: 0.15, fill: Palette.ceramicInset)
+            p.rect(x + 0.16, y + 0.15, w - 0.32, h - 0.38, r: 0.12, fill: Palette.ceramic)
+            p.rect(x + 0.25, y + 0.3, w - 0.5, h - 0.58, r: 0.095, fill: Palette.ceramicInset)
+            p.rect(x + w * 0.5 - 0.045, y + 0.13, 0.09, 0.22, r: 0.04, fill: slate)
+            p.rect(x + w * 0.5 - 0.025, y + 0.14, 0.03, 0.16, r: 0.015, fill: metal)
         case .shower:
             p.rect(x + 0.04, y + 0.04, w - 0.08, h - 0.08, r: 0.06, fill: Palette.turquoise.lighter(0.55))
             for k in 1..<Int(h * 3) { p.line([(x + 0.06, y + Double(k) / 3), (x + w - 0.06, y + Double(k) / 3)], color: Palette.turquoise.lighter(0.3), lw: 0.02) }
@@ -200,10 +220,15 @@ enum PropArt {
         case .bleacher:
             for k in 0..<Int(h * 2) { p.rect(x + 0.04, y + 0.06 + Double(k) * 0.5, w - 0.08, 0.38, r: 0.06, fill: metal.lighter(Double(k) * 0.12), shadow: k == 0) }
         case .tree:
-            p.circle(x + 0.56, y + 0.6, 0.48, fill: Palette.shadow)
-            p.circle(x + 0.5, y + 0.5, 0.46, fill: Palette.woodsDark)
-            p.circle(x + 0.4, y + 0.4, 0.3, fill: Palette.woods)
-            p.circle(x + 0.62, y + 0.36, 0.2, fill: Palette.grassDark)
+            p.oval(x + 0.12, y + 0.72, 0.8, 0.23, fill: Palette.shadow.alpha(0.2))
+            p.rect(x + 0.43, y + 0.62, 0.16, 0.31, r: 0.04, fill: wood.darker(0.18))
+            p.circle(x + 0.5, y + 0.45, 0.36, fill: Palette.woodsDark)
+            for (dx, dy, r) in [(0.23, 0.47, 0.19), (0.28, 0.26, 0.2), (0.48, 0.18, 0.18),
+                                (0.68, 0.26, 0.2), (0.76, 0.45, 0.19), (0.64, 0.65, 0.19), (0.35, 0.65, 0.19)] {
+                p.circle(x + dx, y + dy, r, fill: Palette.woods)
+            }
+            p.circle(x + 0.43, y + 0.36, 0.23, fill: Palette.grassDark)
+            p.circle(x + 0.3, y + 0.29, 0.1, fill: Palette.grassDark.lighter(0.08))
         case .tower:
             p.rect(x + 0.1, y + 0.1, w - 0.2, h - 0.2, r: 0.12, fill: slate, shadow: true)
             p.rect(x + 0.3, y + 0.3, w - 0.6, h - 0.6, r: 0.08, fill: Palette.navy)
@@ -239,8 +264,11 @@ enum PropArt {
             p.rect(x + 0.16, y + 0.1, 0.68, 0.36, r: 0.06, fill: Palette.navy, shadow: true)
             p.line([(x + 0.26, y + 0.28), (x + 0.74, y + 0.28)], color: paper, lw: 0.04)
         case .lamp:
-            p.circle(x + 0.5, y + 0.5, 0.42, fill: Palette.ochre.alpha(0.18))
-            p.circle(x + 0.5, y + 0.5, 0.12, fill: Palette.ochre.lighter(0.3))
+            p.oval(x + 0.32, y + 0.82, 0.4, 0.12, fill: Palette.shadow)
+            p.rect(x + 0.45, y + 0.3, 0.1, 0.6, r: 0.04, fill: slate, shadow: true)
+            p.rect(x + 0.37, y + 0.17, 0.26, 0.22, r: 0.06, fill: Palette.lampGlow)
+            p.rect(x + 0.31, y + 0.09, 0.38, 0.2, r: 0.07, fill: Palette.stone, shadow: true)
+            p.rect(x + 0.33, y + 0.09, 0.34, 0.06, r: 0.025, fill: Palette.stone.lighter(0.12))
         case .chartRack:
             p.rect(x + 0.14, y + 0.1, 0.72, 0.8, r: 0.06, fill: slate, shadow: true)
             for k in 0..<4 { p.rect(x + 0.22, y + 0.18 + Double(k) * 0.17, 0.56, 0.12, r: 0.02, fill: [Palette.blueGray, Palette.ochre, Palette.paper, Palette.turquoise][k]) }

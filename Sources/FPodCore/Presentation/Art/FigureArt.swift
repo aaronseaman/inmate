@@ -1,6 +1,6 @@
 import Foundation
 
-/// Articulated paper-doll figures: separate parts with pivots so the presenter
+/// Articulated rounded figures: separate parts with pivots so the presenter
 /// can swing limbs, bob, squash and turn heads. Left facing = mirrored right.
 public enum FigureArt {
     // Pivot offsets from the feet (tile units, y up is negative).
@@ -26,7 +26,9 @@ public enum FigureArt {
         case .legL, .legR:
             var p = Pen(scale: T)
             let w = 0.13 * ws, len = 0.38 * hs
-            p.rect(0.025, 0, w, len - 0.05, r: 0.05, fill: bottom)
+            p.rect(0.025, 0, w, len - 0.05, r: 0.05, fill: bottom.darker(0.08))
+            p.rect(0.025, 0.01, w * 0.7, len - 0.08, r: 0.035, fill: bottom)
+            p.rect(0.03, len - 0.13, w - 0.01, 0.035, r: 0.015, fill: bottom.lighter(0.15))
             if side { p.rect(0.0, len - 0.09, w + 0.07, 0.09, r: 0.04, fill: shoe) } else { p.rect(0.015, len - 0.08, w + 0.02, 0.08, r: 0.04, fill: shoe) }
             return Drawing(size: Vec2((w + 0.08) * T, len * T), anchor: Vec2(0.35, 0.04), shapes: p.shapes, shadowOffset: .zero, shadowBlur: 0)
         case .body:
@@ -41,6 +43,11 @@ public enum FigureArt {
                     .line(Vec2(x0 + 0.1, y0 + bh)), .quad(Vec2(x0 + 0.06, y0 + bh), Vec2(x0 + 0.05, y0 + bh - 0.04)), .close],
                    fill: top, shadow: true)
             let mid = x0 + bw / 2
+            // Soft tonal modelling stays inside the existing articulated bounds.
+            p.path([.move(Vec2(x0 + bw - 0.1, y0 + 0.035)), .line(Vec2(x0 + bw - 0.025, y0 + 0.08)),
+                    .line(Vec2(x0 + bw - 0.05, y0 + bh - 0.04)), .quad(Vec2(x0 + bw - 0.06, y0 + bh), Vec2(x0 + bw - 0.1, y0 + bh)),
+                    .line(Vec2(x0 + bw - 0.12, y0 + bh - 0.06)), .close], fill: top.darker(0.1))
+            p.line([(x0 + 0.095, y0 + bh - 0.035), (x0 + bw - 0.1, y0 + bh - 0.035)], color: top.lighter(0.15), lw: 0.02)
             let detail = top.darker(0.16)
             if f == .down {
                 switch a.garment {
@@ -87,28 +94,33 @@ public enum FigureArt {
         case .armL, .armR:
             var p = Pen(scale: T)
             let w = 0.1, len = 0.34 * hs
-            p.rect(0.01, 0, w, len * 0.68, r: 0.05, fill: top.darker(0.06))
+            p.rect(0.025, len * 0.43, 0.07, len * 0.4, r: 0.035, fill: skin)
+            p.rect(0.01, 0, w, len * 0.57, r: 0.05, fill: top.darker(0.06))
+            p.rect(0.015, 0.015, w * 0.62, len * 0.48, r: 0.03, fill: top.lighter(0.07))
             p.circle(0.01 + w / 2, len - 0.06, 0.055, fill: skin)
+            p.circle(0.045, len - 0.075, 0.025, fill: skin.lighter(0.1))
             return Drawing(size: Vec2((w + 0.02) * T, len * T), anchor: Vec2(0.5, 0.06), shapes: p.shapes, shadowOffset: .zero, shadowBlur: 0)
         case .head:
             var p = Pen(scale: T)
             let D = 0.44
-            let cx = D / 2, cy = D / 2, r = 0.165
+            let cx = D / 2, cy = D / 2, r = 0.19
             // Neck
             p.rect(cx - 0.05, cy + r - 0.06, 0.1, 0.1, r: 0.03, fill: skin.darker(0.08))
             if f == .down {
                 p.circle(cx - r + 0.005, cy + 0.01, 0.035, fill: skin.darker(0.05))
                 p.circle(cx + r - 0.005, cy + 0.01, 0.035, fill: skin.darker(0.05))
             }
-            p.circle(cx, cy, r, fill: skin, shadow: true)
+            p.circle(cx, cy, r, fill: skin.darker(0.055), shadow: true)
+            p.oval(cx - r, cy - r, r * 1.85, r * 1.86, fill: skin)
+            p.oval(cx - 0.1, cy - 0.135, 0.14, 0.07, fill: skin.lighter(0.08))
             let eye = Palette.ink
             switch f {
             case .down:
                 p.circle(cx - 0.055, cy + 0.01, 0.018, fill: eye)
                 p.circle(cx + 0.055, cy + 0.01, 0.018, fill: eye)
                 p.arc(cx, cy + 0.035, 0.04, 0.5, 2.64, color: skin.darker(0.35), lw: 0.012)
-                p.circle(cx - 0.09, cy + 0.055, 0.022, fill: Palette.coral.alpha(0.18))
-                p.circle(cx + 0.09, cy + 0.055, 0.022, fill: Palette.coral.alpha(0.18))
+                p.circle(cx - 0.09, cy + 0.055, 0.022, fill: Palette.coral.alpha(0.24))
+                p.circle(cx + 0.09, cy + 0.055, 0.022, fill: Palette.coral.alpha(0.24))
             case .right, .left:
                 p.circle(cx + 0.09, cy + 0.005, 0.017, fill: eye)
                 p.poly([(cx + r - 0.01, cy + 0.0), (cx + r + 0.03, cy + 0.035), (cx + r - 0.01, cy + 0.05)], fill: skin)
@@ -144,7 +156,7 @@ public enum FigureArt {
         case .hair:
             var p = Pen(scale: T)
             let D = 0.44
-            let cx = D / 2, cy = D / 2, r = 0.165
+            let cx = D / 2, cy = D / 2, r = 0.19
             let back = f == .up
             let sideRight = f == .right || f == .left
             func cap(_ depth: Double) {
