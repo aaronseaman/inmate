@@ -21,7 +21,7 @@ transitions, icons and aftermath. No realistic doses, procedures, weapons or sec
 | Tests | 84 XCTest cases, including end-to-end playthroughs of all three endings |
 
 See `docs/FEATURE_MATRIX.md` for the spec-by-spec checklist, `docs/KNOWN_LIMITATIONS.md`
-for what has *not* been verified, `docs/LICENSES.md` for the asset inventory and
+for what has *not* been verified, `docs/LICENSES.md` for the asset inventory, `docs/GRAPHICS_HANDOFF.md` for art contributors and
 `docs/STYLE_GUIDE.md` for the art, audio and writing rules.
 
 ## Controls (tap only)
