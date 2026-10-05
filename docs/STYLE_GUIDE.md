@@ -15,17 +15,23 @@
 
 ## Palette (`Util/Color.swift`)
 
-| Token | Hex | Use |
-|---|---|---|
-| ivory | #F2EEE5 | Paper, cards, walls |
-| blueGray | #CBD7DB | Floors, inactive fills |
-| slate | #536871 | Secondary ink, metal |
-| navy | #344956 | Primary buttons, staff uniforms |
-| tan | #C5AC83 | Scrubs, wood accents |
-| turquoise | #74B7B4 | Positive progress, safe accents |
-| ochre | #D4AD5C | Highlights, objectives |
-| coral | #C97C6A | Danger accents only |
-| status green/yellow/red | #6FA77F / #D9B44A / #C2665A | Small status badges, always paired with an icon and a word |
+The graphics pass moved the palette from the spec's muted values to a brighter reference look
+(warm cream architecture, blue tile, saturated green grounds). Roles are unchanged.
+
+| Token | Hex now | Spec value | Use |
+|---|---|---|---|
+| ivory | #FFF1D6 | #F2EEE5 | Paper, cards, walls |
+| blueGray | #AECFDF | #CBD7DB | Floors, inactive fills |
+| slate | #526B83 | #536871 | Secondary ink, metal |
+| navy | #20364F | #344956 | Primary buttons, staff uniforms |
+| tan | #E7BC75 | #C5AC83 | Scrubs, wood accents |
+| turquoise | #43AEB0 | #74B7B4 | Positive progress, safe accents |
+| ochre | #F8AF35 | #D4AD5C | Highlights, objectives |
+| coral | #D97966 | #C97C6A | Danger accents only |
+| status green/yellow/red | #52AC66 / #E8BC46 / #C85D54 | #6FA77F / #D9B44A / #C2665A | Small status badges, always paired with an icon and a word |
+
+World accents added in the same pass: blanket #FFAD32, ceramic #DAF5FA (inset #AFE0E9),
+stone #98A3B4, lamp glow #FFE9A0. Text contrast: ink on paper 12.5:1, secondary ink 5.4:1.
 
 Separate floors, walls, doors, people and props by value and silhouette, not hue alone.
 

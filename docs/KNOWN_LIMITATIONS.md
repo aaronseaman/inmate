@@ -31,6 +31,9 @@ Plainly stated. Nothing below is hidden behind a "done" checkbox elsewhere.
 - **No SwiftUI.** All interface is drawn from the core display list so the same UI is tested
   headlessly; VoiceOver is served by a UIKit accessibility overlay.
 - **One player character** (Jo Merritt). No character creation.
+- **Palette differs from the spec's hex values.** The graphics pass replaced them with a brighter
+  reference palette (same roles; both sets in `STYLE_GUIDE.md`). The white icon on the ochre
+  objective badge is low-contrast (1.8:1); the objective text beside it carries the meaning.
 
 ## Systems with stated gaps
 

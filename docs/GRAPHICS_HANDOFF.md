@@ -8,7 +8,7 @@ working.
 
 | File | Draws |
 |---|---|
-| `Sources/FPodCore/Util/Color.swift` | `Palette` tokens. The spec's eight colors plus status colors and world tones. |
+| `Sources/FPodCore/Util/Color.swift` | `Palette` tokens: eight anchors, status colors, world tones and accents (values in `STYLE_GUIDE.md`). |
 | `Presentation/Art/ArtLibrary.swift` | `ArtKey → Drawing` dispatch; UI art: panels, buttons, badges, bubbles, markers, `named(...)` extras. |
 | `Presentation/Art/ChunkArt.swift` | Floor, walls and ground for 16×16-tile map chunks (rasterized once, cached). |
 | `Presentation/Art/PropArt.swift` | Furniture and objects (`ObjKind`). |
