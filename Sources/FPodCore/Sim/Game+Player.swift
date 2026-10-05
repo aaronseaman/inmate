@@ -129,6 +129,10 @@ extension Game {
                 p.energy = max(0, p.energy - dt * 0.9)
                 if p.outfit != .tanScrubs { p.outfitCondition = max(0, p.outfitCondition - dt * 0.6) }
             }
+            // Dirt: tunnels, the perimeter and the woods rub off on a disguise.
+            if p.outfit != .tanScrubs, p.vehicle == nil, let z = map.zone(at: p.pos), Game.grimyZone(z) {
+                p.outfitCondition = max(0, p.outfitCondition - moved * Game.grimeWearPerTile)
+            }
             _ = speed
         }
         trackZone(&p)
@@ -312,6 +316,7 @@ extension Game {
         occupiedHides.insert(objectID)
         sound(.swish, volume: 0.5)
         if !has(.firstHide) { setFlag(.firstHide) }
+        outfitAfterHide(objectID)
         // Anyone who watched you go in remembers which spot.
         for i in s.npcs.indices where Cast.def(s.npcs[i].id).role.isStaff && s.npcs[i].present {
             if npcSeesPoint(s.npcs[i], o.center, range: Cast.def(s.npcs[i].id).role.vision.range) && s.npcs[i].suspicion >= 25 {

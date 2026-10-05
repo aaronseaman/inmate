@@ -399,6 +399,7 @@ extension Game {
         ui.cameraSnap = true
         ui.districtFade = settings.reducedMotion ? 0 : 1
         sound(.hatch)
+        outfitThroughHatch(objectID)
         makeNoise(at: dest.center, loudness: 3, suspicious: true, source: .player)
         if let z = map.zone(at: dest.center) { s.player.lastZone = z.id; s.player.lastDistrict = z.district; emit(.zoneEntered(z.id)) }
         stat("hatches")

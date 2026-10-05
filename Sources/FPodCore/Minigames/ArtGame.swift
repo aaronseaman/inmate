@@ -81,7 +81,7 @@ public final class ArtGame: MinigameBase, Minigame {
 
     public var score: Double { clamp(0.45 * (promptMet ? 1 : 0) + 0.55 * composition, 0, 1) }
 
-    /// What Kenji would pay for it at the art table.
+    /// What it fetches at the chaplain's craft sale (`Game.sellDrawing`).
     public var saleValue: Int { stamps.isEmpty ? 0 : 1 + Int((score * 5).rounded()) }
 
     public var summary: String {

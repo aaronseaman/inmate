@@ -185,6 +185,7 @@ extension Game {
                 } else {
                     s.claimedRewards.insert(mg.key)
                     apply(onPass, npc: mg.npc)
+                    if let art = mg.game as? ArtGame, art.saleValue > 0 { recordArtPiece(art.saleValue) }
                 }
             } else {
                 apply(onFail, npc: mg.npc)

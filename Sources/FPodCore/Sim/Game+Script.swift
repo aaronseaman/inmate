@@ -211,6 +211,7 @@ extension Game {
                 }
             }
         case .concealedRide(let spot, let pusher): transition = Scenes.concealedRide(self, to: spot, pusher: pusher)
+        case .sellDrawing(let fallback, let why): sellDrawing(fallback: fallback, reason: why)
         case .putInStash(let container, let item, let n):
             s.stashes[container, default: []].append(ItemStack(item, n))
         case .returnOwned(let item, let owner):

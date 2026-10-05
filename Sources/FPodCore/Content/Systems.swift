@@ -131,7 +131,7 @@ enum SystemInteractions {
                        ]),
         InteractionDef("supply.sell", .npc(.bell), .drawing, "Give a drawing to the craft sale", when: .all([.has(.drawing), .dailyOnce("craftsale")]),
                        reply: [.drawing, .coin, .heart], priority: 3, [
-                        .markDaily("craftsale"), .take(.drawing, 1), .credits(4, "Craft sale"), .staff(.bell, 1),
+                        .markDaily("craftsale"), .sellDrawing(fallback: 4, reason: "Craft sale"), .staff(.bell, 1),
                         .caption("Bell: Volunteers buy these every Sunday. Four credits to your account."),
                        ]),
         InteractionDef("supply.commissary", .npc(.pruitt), .form, "Submit a commissary account request",

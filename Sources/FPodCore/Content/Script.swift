@@ -30,6 +30,7 @@ public enum IncidentKind: String, Codable, CaseIterable {
     case restrictedArea, missedCount, lateCount, theft, contraband, dangerousItem, brokenDisguise
     case fleeing, assault, hidingFromStaff, lockdownRunning, curfew, missedShift, changingWatched
     case equipmentCollision
+    case missedWatchCheck
 
     public var title: String {
         switch self {
@@ -48,13 +49,14 @@ public enum IncidentKind: String, Codable, CaseIterable {
         case .missedShift: return "Missed work shift"
         case .changingWatched: return "Changing clothes in view"
         case .equipmentCollision: return "Equipment collision"
+        case .missedWatchCheck: return "Missed a watch check"
         }
     }
     /// 0 minor ... 3 severe.
     public var severity: Int {
         switch self {
         case .lateCount, .missedShift: return 0
-        case .restrictedArea, .curfew, .changingWatched, .hidingFromStaff, .equipmentCollision: return 1
+        case .restrictedArea, .curfew, .changingWatched, .hidingFromStaff, .equipmentCollision, .missedWatchCheck: return 1
         case .missedCount, .theft, .contraband, .brokenDisguise, .fleeing, .lockdownRunning: return 2
         case .dangerousItem, .assault: return 3
         }
@@ -72,6 +74,7 @@ public enum IncidentKind: String, Codable, CaseIterable {
         case .curfew: return .moon
         case .missedShift: return .work
         case .equipmentCollision: return .buffer
+        case .missedWatchCheck: return .eye
         }
     }
 }
@@ -203,6 +206,8 @@ public indirect enum Effect {
     case putInStash(String, ItemID, Int)
     /// Concealed ride (laundry cart): little control, little view, some risk.
     case concealedRide(to: String, pusher: NPCID)
+    /// Sells one drawing: the best art-therapy piece at its value, else `fallback` credits.
+    case sellDrawing(fallback: Int, reason: String)
 }
 
 public enum Restriction: String, Codable, CaseIterable {

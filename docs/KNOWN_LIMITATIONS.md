@@ -34,17 +34,17 @@ Plainly stated. Nothing below is hidden behind a "done" checkbox elsewhere.
 
 ## Systems with stated gaps
 
-- Yellow watch's "closer rounds" is a suspicion multiplier and movement restriction, not
-  additional patrol routes. The red-watch constant observer is drawn from day-shift technicians;
-  overnight the night officer's normal rounds apply.
-- Outfit condition drops while running and is restored by washing; there are no authored stain or
-  tear events.
+- Yellow-watch checks happen in waking hours only; at lights out the bunk count covers it. The
+  red-watch constant observer is drawn from day-shift technicians; overnight the night officer's
+  normal rounds apply.
+- Outfit wear is event-based (running, grime, snags, stains); there is no per-garment visual
+  damage — the condition shows as a number and changes how close a familiar officer must be.
 - Cameras with nobody at the monitors record footage reviewed the next morning; they do not
   track a hidden player.
 - Peers' daily routines are schedule-driven with authored events; there is modest seeded variation
   (movie night, soup day, common-area sweeps), not a generative social simulation.
-- The art-sale price is fixed (4 credits via the chaplain's craft sale); the art minigame's score
-  sets a nominal value shown to the player, not the payout.
+- Only drawings made in art therapy carry a score-based price; drawings from Kenji or trades sell
+  for a flat 4 credits.
 - Card and domino opponents are deliberately basic; a competent player wins most but not all games.
 - The map and dialogue are English only; there is no localization layer.
 

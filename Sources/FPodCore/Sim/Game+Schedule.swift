@@ -16,6 +16,7 @@ extension Game {
         updateLightsOut()
         updateAppointments()
         updateWatchExpiry()
+        updateWatchChecks()
     }
 
     func onBlockStart(_ b: ScheduleBlock, previous: Activity?) {

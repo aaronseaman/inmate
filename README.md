@@ -18,7 +18,7 @@ transitions, icons and aftermath. No realistic doses, procedures, weapons or sec
 | World | 200×140-tile campus, 10 districts, 91 zones, 76 doors, 12 cameras, 41 hiding places, 58 stashes |
 | Play | 7 jobs, 19 minigames (chess with full rules, dominoes, crazy eights …), 4 vehicles + van run |
 | Endings | Conditional release · A better placement (advocacy) · Through the trees (escape) |
-| Tests | 84 XCTest cases, including end-to-end playthroughs of all three endings |
+| Tests | 91 XCTest cases, including end-to-end playthroughs of all three endings |
 
 See `docs/FEATURE_MATRIX.md` for the spec-by-spec checklist, `docs/KNOWN_LIMITATIONS.md`
 for what has *not* been verified, `docs/LICENSES.md` for the asset inventory, `docs/GRAPHICS_HANDOFF.md` for art contributors and
@@ -61,7 +61,7 @@ no package dependency to resolve. Saves live in `Application Support/FPod/` (`sa
 
 ```sh
 swift build                      # core library + dev tool
-swift test                       # 84 tests (≈35 s in debug)
+swift test                       # 91 tests (≈45 s in debug)
 swift run fpod-tool scenarios    # list snapshot scenarios
 swift run fpod-tool stats        # content counts
 swift run fpod-tool items        # every item's sources and uses

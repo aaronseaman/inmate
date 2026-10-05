@@ -114,6 +114,7 @@ extension Game {
         s.player.energy = min(100, s.player.energy + (soup ? 30 : 18))
         toast(.meal, ["Oatmeal and an orange", "Soup. Odell is proud of the soup.", "Mystery casserole", "Chili mac"][(s.day + Int(s.minute)) % 4])
         sound(.clank, volume: 0.4)
+        outfitAtMeal(soup: soup)
         stat("meals")
     }
 

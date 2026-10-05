@@ -326,6 +326,10 @@ public struct GameState: Codable {
     /// Vehicle parked away from its bay (object id -> position).
     public var parkedVehicles: [String: Vec2]?
     public var bigOrderDay: Int?
+    /// Yellow-watch room checks.
+    public var watchCheck: WatchCheckState?
+    /// Sale values of art-therapy drawings still held (other drawings have none).
+    public var artValues: [Int]?
 
     public init(seed: UInt64, playerPos: Vec2) {
         self.seed = seed

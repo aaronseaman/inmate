@@ -114,6 +114,7 @@ public enum Docs {
             ]),
             DocSection(heading: "What it means", lines: [
                 DocLine("Yellow: closer rounds, reduced movement, no commissary."),
+                DocLine("On yellow, an officer comes to see you about once an hour. Be where they can find you; two missed checks mean red."),
                 DocLine("Red: an observer stays with you; no yard; limited privacy."),
                 DocLine("Restrictions never erase legal progress."),
             ]),

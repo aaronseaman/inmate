@@ -88,7 +88,7 @@ test names refer to `Tests/FPodCoreTests`.
 | Requirement | Status | Implementation | Verification |
 |---|---|---|---|
 | Separate suspicion / alert / watch / trust / peers / legal | ✅ | Distinct state in `GameState` | — |
-| Yellow: reduced movement, no commissary, closer scrutiny | ◐ | Free time confined to the pod (doors), commissary closed, suspicion ×1.15 | `testYellowWatchKeepsFreeTimeInThePod`. "Closer rounds" is the suspicion multiplier, not extra patrol routes. |
+| Yellow: closer rounds, reduced movement, no commissary | ✅ | Free time confined to the pod (doors), commissary closed, suspicion ×1.15; every ~50 game minutes the nearest floor officer walks over to see you (intercom if nobody is near). Hiding through a check is a miss: the officer searches, yellow is extended 6 h, a second miss raises red (`Sim/Game+WatchRounds.swift`) | `testYellowWatchKeepsFreeTimeInThePod`, `WatchRoundsTests` |
 | Red: constant observer, no yard, limited privacy | ✅ | Observer follows (`followPlayer`), yard doors closed, no private changing | Perception + access code; observer staffing is day-shift only (Cole/Varga). |
 | Seclusion: non-graphic, time skip, review, recovery task | ✅ | Capture card → player placed in seclusion room → 4 h skip → SR-2 doc → 72 h watch | `RecoveryTests.testSevereIncidentDoesNotBlockTheStory` |
 | Restraint-chair event only in authored abuse scene | ✅ | `StoryScenes.restraint` (Strick/Kenji), leads to complaint path | `StoryTests` reach; content review |
@@ -100,7 +100,7 @@ test names refer to `Tests/FPodCoreTests`.
 | Requirement | Status | Implementation | Verification |
 |---|---|---|---|
 | 9 outfits with role plausibility per zone class and hours | ✅ | `Outfit.plausibleIn`, `disguisePlausible` | `testDisguiseGivesPlausibilityButFamiliarStaffRecognize`, `testDisguiseErrandIsolationLetter` |
-| Condition 0–100, prop bonus, familiar-staff recognition | ◐ | Condition drops when running, restored by washing; props raise plausibility; recognition at close range | No authored stain/tear events beyond running. |
+| Condition 0–100, prop bonus, familiar-staff recognition | ✅ | Sweat (running), dirt (tunnels, perimeter, woods), tears (culvert, hatches), stains (dumpster, vents, drains, meals — always on soup day); washing restores; props raise plausibility; worn disguises are recognized from further (`Sim/Game+OutfitWear.swift`) | `testDisguisesPickUpDirtTearsAndStains`, `testWornDisguiseIsRecognizedFromFurther` |
 | 2.5 s change in private places; watched change is suspicious; red watch removes privacy | ✅ | `beginChange`, `privateForChanging` | `testChangingInViewIsSuspicious`, `testRedWatchRemovesPrivacy`, `testMovementAndVisionValues` |
 | Every disguise has ≥ 2 routes and a quest use | ✅ | Jobs, favors, trades, supply racks, choices (`Content/Systems.swift`) | `testEveryOutfitHasTwoRoutes`. Quest uses: kitchen whites (Dinner rush), PPE (Mail for isolation), CO (Navy in the wash), visitor (review hearing, Nadia), chaplain (hymnal), white coat & maintenance (records/escape routes), laundry whites (cart ride). |
 | Stash points incl. bunks, laundry bins, stacks, donation box; independent discovery | ✅ | 58 stash containers; cell searches and common-area sweeps roll each container's own odds | `testSearchOnlyLosesSearchedContainers`; sweep in `Systems.sweepCommonStashes` |
@@ -123,7 +123,7 @@ test names refer to `Tests/FPodCoreTests`.
 |---|---|---|---|
 | 7 jobs: unlock, schedule, supervisor, task, pay, performance, access, risk/trust choice | ✅ | `Content/Jobs.swift`, tryouts + applications, `SystemChoices` job choices on 2nd shift | `testEveryJobIsReachableThroughATryout`, `testJobRiskChoiceArrivesOnSecondShift` |
 | Job minigames: mop route, tray line, laundry sort, shelving (Dewey decimals), supply match, sewing timing, garden | ✅ | `Minigames/*` | `MinigameTests` (idle ends low, bot passes on all difficulties and two screen sizes, random taps safe, renders finite) |
-| Leisure: basketball aim/power, weights rhythm, chess (full legal moves + AI), dominoes, crazy eights, horseshoes, art composition + sales; betting bounded and optional | ✅ | `BasketballGame`, `WeightsGame`, `ChessEngine/ChessGame`, `DominoesGame`, `CrazyEightsGame`, `HorseshoesGame`, `ArtGame`; bet on hoop (3 cr, daily) | `ChessTests` (perft incl. Kiwipete), `testContestBotIsCompetitive` |
+| Leisure: basketball aim/power, weights rhythm, chess (full legal moves + AI), dominoes, crazy eights, horseshoes, art composition + sales; betting bounded and optional | ✅ | `BasketballGame`, `WeightsGame`, `ChessEngine/ChessGame`, `DominoesGame`, `CrazyEightsGame`, `HorseshoesGame`, `ArtGame` (each piece's score sets its craft-sale price, 3–6 cr; `Sim/Game+ArtSales.swift`); bet on hoop (3 cr, daily) | `testCraftSalePaysTheArtTherapyValue`, `ChessTests` (perft incl. Kiwipete), `testContestBotIsCompetitive` |
 | Special: drain, gurney ramp, cart driving, clerk filing, mail sorting | ✅ | `DrainGame`, `GurneyGame`, `CartDriveGame`, `FilingGame`, `MailSortGame` | `MinigameTests` |
 | Shared contract: explain, play, score, reward once, exit safely; 20–60 s; assist mode | ✅ | `MinigameSession`, intro/result screens, reward keys | `testShiftThroughGamePaysOnceAndFeedsPerformance` |
 
