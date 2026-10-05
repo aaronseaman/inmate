@@ -160,7 +160,7 @@ test names refer to `Tests/FPodCoreTests`.
 
 | Requirement | Status | Implementation | Verification |
 |---|---|---|---|
-| Flat paper-cut style, spec palette, soft offset shadows, vector forms | ✅ | `Presentation/Art/*` | Snapshots (`out/*.png`) |
+| Flat paper-cut style, palette, soft offset shadows, vector forms | ✅ | `Presentation/Art/*`; palette replaced by the owner's brighter choice (`STYLE_GUIDE.md`) | Snapshots (`out/*.png`) |
 | Articulated figures; walk/sneak/run/idle/interact/carry/caught | ✅ | `FigureArt`, `appendFigure` poses | Snapshots |
 | Recognizable furniture, district variation, paper-card menus | ✅ | `PropArt`, `ChunkArt` | `testAllEffectsRenderCleanly`, snapshots |
 | Music: upbeat guitar/whistle + night/search variants; effects list; mumbles; ducking; spatialized threats | ✅ | `Audio/Music.swift`, `SFXBank.swift`, pan/volume by distance | `AudioTests`; rendered WAVs. **Not heard through AVAudioEngine on a device.** |
