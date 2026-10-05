@@ -52,44 +52,52 @@ public struct RGBA: Hashable, Codable {
 
 /// The F-Pod palette. Every color in the game derives from these anchors.
 public enum Palette {
-    public static let ivory = RGBA(hex: 0xF2EEE5)
-    public static let blueGray = RGBA(hex: 0xCBD7DB)
-    public static let slate = RGBA(hex: 0x536871)
-    public static let navy = RGBA(hex: 0x344956)
-    public static let tan = RGBA(hex: 0xC5AC83)
-    public static let turquoise = RGBA(hex: 0x74B7B4)
-    public static let ochre = RGBA(hex: 0xD4AD5C)
-    public static let coral = RGBA(hex: 0xC97C6A)
+    public static let ivory = RGBA(hex: 0xFFF1D6)
+    public static let blueGray = RGBA(hex: 0xAECFDF)
+    public static let slate = RGBA(hex: 0x526B83)
+    public static let navy = RGBA(hex: 0x20364F)
+    public static let tan = RGBA(hex: 0xE7BC75)
+    public static let turquoise = RGBA(hex: 0x43AEB0)
+    public static let ochre = RGBA(hex: 0xF8AF35)
+    public static let coral = RGBA(hex: 0xD97966)
 
     // Status cues (small indicators only, always paired with icon + label).
-    public static let statusGreen = RGBA(hex: 0x6FA77F)
-    public static let statusYellow = RGBA(hex: 0xD9B44A)
-    public static let statusRed = RGBA(hex: 0xC2665A)
+    public static let statusGreen = RGBA(hex: 0x52AC66)
+    public static let statusYellow = RGBA(hex: 0xE8BC46)
+    public static let statusRed = RGBA(hex: 0xC85D54)
 
-    // Derived neutrals.
-    public static let paper = RGBA(hex: 0xFAF7F1)
-    public static let ink = RGBA(hex: 0x2B3A44)
-    public static let inkSoft = RGBA(hex: 0x5E707A)
+    // Reference image: warm cream architecture, blue tile and saturated green grounds.
+    // Keep the primary ink dark enough for labels on every paper surface.
+    public static let paper = RGBA(hex: 0xFFFCF2)
+    public static let ink = RGBA(hex: 0x20334D)
+    public static let inkSoft = RGBA(hex: 0x536B81)
     public static let shadow = RGBA(hex: 0x1E2C35, alpha: 0.20)
     public static let shadowStrong = RGBA(hex: 0x1E2C35, alpha: 0.32)
-    public static let wallTop = RGBA(hex: 0xEAE4D8)
-    public static let wallEdge = RGBA(hex: 0xBDB4A4)
-    public static let floor = RGBA(hex: 0xD6E0E3)
-    public static let floorAlt = RGBA(hex: 0xCDD9DD)
-    public static let grass = RGBA(hex: 0xA9C3A0)
-    public static let grassDark = RGBA(hex: 0x93B08B)
-    public static let concrete = RGBA(hex: 0xD3D0C7)
-    public static let track = RGBA(hex: 0xC9A88C)
-    public static let woods = RGBA(hex: 0x6E8F72)
-    public static let woodsDark = RGBA(hex: 0x587A5E)
+    public static let wallTop = RGBA(hex: 0xF8E4BB)
+    public static let wallEdge = RGBA(hex: 0xCBA384)
+    public static let floor = RGBA(hex: 0xAECFE2)
+    public static let floorAlt = RGBA(hex: 0xA6C8DB)
+    public static let grass = RGBA(hex: 0x54BC45)
+    public static let grassDark = RGBA(hex: 0x36A449)
+    public static let concrete = RGBA(hex: 0xD8D3C5)
+    public static let track = RGBA(hex: 0xCC9E7B)
+    public static let woods = RGBA(hex: 0x299747)
+    public static let woodsDark = RGBA(hex: 0x1F793F)
     public static let tunnel = RGBA(hex: 0x9AA6A8)
-    public static let wood = RGBA(hex: 0xB89670)
-    public static let metal = RGBA(hex: 0x9FB0B6)
+    public static let wood = RGBA(hex: 0xC39C73)
+    public static let metal = RGBA(hex: 0x95B6CC)
     public static let white = RGBA(hex: 0xFFFFFF)
 
-    // Skin tones (adult, varied).
+    // World accents kept distinct from status indicators.
+    public static let blanket = RGBA(hex: 0xFFAD32)
+    public static let ceramic = RGBA(hex: 0xDAF5FA)
+    public static let ceramicInset = RGBA(hex: 0xAFE0E9)
+    public static let stone = RGBA(hex: 0x98A3B4)
+    public static let lampGlow = RGBA(hex: 0xFFE9A0)
+
+    // Skin tones (varied).
     public static let skins: [RGBA] = [
-        RGBA(hex: 0xF1D3B8), RGBA(hex: 0xE2B48F), RGBA(hex: 0xC8956C), RGBA(hex: 0xA8724E),
+        RGBA(hex: 0xFFD0AF), RGBA(hex: 0xEDB88D), RGBA(hex: 0xD39971), RGBA(hex: 0xA8724E),
         RGBA(hex: 0x8A5A3C), RGBA(hex: 0x6B4430), RGBA(hex: 0xD9A982), RGBA(hex: 0xEBC6A3),
     ]
     public static let hairs: [RGBA] = [

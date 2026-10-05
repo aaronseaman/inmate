@@ -11,14 +11,24 @@ public enum ChunkArt {
         guard let z = z else { return (.lino, Palette.floor) }
         let id = z.id
         if id == "fpod.showers" { return (.tile, Palette.turquoise.lighter(0.62)) }
-        if id.hasPrefix("kitchen.") && id != "kitchen.dining" { return (.checker, RGBA(hex: 0xE7ECE8)) }
-        if id == "support.chapel" || id == "admin.office" || id == "admin.hearing" || id == "support.office" { return (.wood, RGBA(hex: 0xD9C4A4)) }
-        if id == "support.library" || id == "support.lawlib" { return (.carpet, RGBA(hex: 0xC9D3C2)) }
-        if id == "admin.visiting" || id == "support.quiet" { return (.carpet, RGBA(hex: 0xC7D4DE)) }
-        if id.hasPrefix("obs.") { return (.cold, RGBA(hex: 0xD6DCDF)) }
-        if id.hasPrefix("fpod.cell") { return (.cell, RGBA(hex: 0xD0D9DC)) }
-        if id == "support.infirmary" || id == "support.ante" || id == "support.isolation" { return (.lino, RGBA(hex: 0xDAE6E1)) }
-        return (.lino, z.district.floorTint)
+        if id.hasPrefix("kitchen.") && id != "kitchen.dining" { return (.checker, Palette.ceramic.lighter(0.45)) }
+        if id == "support.chapel" || id == "admin.office" || id == "admin.hearing" || id == "support.office" { return (.wood, Palette.wood.lighter(0.4)) }
+        if id == "support.library" || id == "support.lawlib" { return (.carpet, Palette.grass.mix(Palette.ivory, 0.75)) }
+        if id == "admin.visiting" || id == "support.quiet" { return (.carpet, Palette.floor.lighter(0.15)) }
+        if id.hasPrefix("obs.") { return (.cold, Palette.blueGray.lighter(0.25)) }
+        if id.hasPrefix("fpod.cell") { return (.cell, Palette.floor.darker(0.025)) }
+        if id == "support.infirmary" || id == "support.ante" || id == "support.isolation" { return (.lino, Palette.ceramic.mix(Palette.floor, 0.25)) }
+        // District hues derive from the reference palette without editing world content.
+        switch z.district {
+        case .fpod, .corridor: return (.lino, Palette.floor)
+        case .control, .restricted: return (.cold, Palette.blueGray)
+        case .vocrehab: return (.lino, Palette.floor.mix(Palette.ivory, 0.3))
+        case .kitchen, .support: return (.lino, Palette.ceramic.mix(Palette.floor, 0.4))
+        case .admin: return (.lino, Palette.ivory.darker(0.05))
+        case .service: return (.cold, Palette.tunnel)
+        case .yard, .perimeter: return (.lino, Palette.grass)
+        case .grounds: return (.lino, Palette.concrete)
+        }
     }
 
     public static func draw(cx: Int, cy: Int, tile T: Double, map: WorldMap) -> Drawing {
@@ -40,7 +50,7 @@ public enum ChunkArt {
                     let (style, base) = floorStyle(z)
                     switch style {
                     case .lino, .cell, .cold:
-                        let alt = (tx + ty) % 2 == 0 ? base : base.darker(0.025)
+                        let alt = (tx + ty) % 2 == 0 ? base : base.darker(0.035)
                         p.rect(lx - 0.012, ly - 0.012, 1.024, 1.024, fill: alt)
                     case .tile:
                         p.rect(lx - 0.012, ly - 0.012, 1.024, 1.024, fill: base)
@@ -57,17 +67,33 @@ public enum ChunkArt {
                     }
                 case .grass:
                     p.rect(lx - 0.012, ly - 0.012, 1.024, 1.024, fill: Palette.grass)
-                    if h % 5 == 0 { p.arc(lx + 0.3 + Double(h % 7) * 0.06, ly + 0.6, 0.12, -2.6, -0.5, color: Palette.grassDark, lw: 0.04) }
+                    // Low ground cover only: never invent a solid tree on a walkable tile.
+                    if h % 5 == 0 {
+                        let gx = lx + 0.25 + Double(h % 7) * 0.06
+                        p.line([(gx - 0.06, ly + 0.68), (gx - 0.08, ly + 0.53)], color: Palette.grassDark, lw: 0.035)
+                        p.line([(gx, ly + 0.7), (gx + 0.02, ly + 0.49)], color: Palette.grassDark, lw: 0.04)
+                    }
+                    if h % 43 == 0 {
+                        let fx = lx + 0.48, fy = ly + 0.5
+                        for (dx, dy) in [(-0.065, 0.0), (0.065, 0.0), (0.0, -0.065), (0.0, 0.065)] {
+                            p.circle(fx + dx, fy + dy, 0.048, fill: Palette.paper)
+                        }
+                        p.circle(fx, fy, 0.036, fill: Palette.ochre)
+                    } else if h % 59 == 0 {
+                        p.oval(lx + 0.32, ly + 0.51, 0.3, 0.13, fill: Palette.shadow.alpha(0.15))
+                        p.oval(lx + 0.3, ly + 0.45, 0.28, 0.16, fill: Palette.stone)
+                        p.oval(lx + 0.32, ly + 0.45, 0.22, 0.1, fill: Palette.stone.lighter(0.12))
+                    }
                 case .concrete:
                     p.rect(lx - 0.012, ly - 0.012, 1.024, 1.024, fill: Palette.concrete)
                     if tx % 4 == 0 { p.line([(lx, ly), (lx, ly + 1)], color: Palette.concrete.darker(0.07), lw: 0.02) }
                     if ty % 4 == 0 { p.line([(lx, ly), (lx + 1, ly)], color: Palette.concrete.darker(0.07), lw: 0.02) }
                 case .court:
-                    p.rect(lx - 0.012, ly - 0.012, 1.024, 1.024, fill: RGBA(hex: 0xD8BF8E))
+                    p.rect(lx - 0.012, ly - 0.012, 1.024, 1.024, fill: Palette.tan.lighter(0.15))
                 case .track:
                     p.rect(lx - 0.012, ly - 0.012, 1.024, 1.024, fill: Palette.track)
                 case .road:
-                    p.rect(lx - 0.012, ly - 0.012, 1.024, 1.024, fill: RGBA(hex: 0xA4A9A6))
+                    p.rect(lx - 0.012, ly - 0.012, 1.024, 1.024, fill: Palette.slate.lighter(0.35))
                 case .woods:
                     p.rect(lx - 0.012, ly - 0.012, 1.024, 1.024, fill: Palette.woods)
                 case .tunnel:
@@ -79,7 +105,7 @@ public enum ChunkArt {
                     var under = Palette.grass
                     for d in TilePos.dirs4 {
                         let nk = k(tx + d.x, ty + d.y)
-                        if nk == .concrete { under = Palette.concrete } else if nk == .road { under = RGBA(hex: 0xA4A9A6) }
+                        if nk == .concrete { under = Palette.concrete } else if nk == .road { under = Palette.slate.lighter(0.35) }
                     }
                     p.rect(lx - 0.012, ly - 0.012, 1.024, 1.024, fill: under)
                 case .void:
@@ -97,8 +123,13 @@ public enum ChunkArt {
                     let lx = Double(tx - x0) + 0.5, ly = Double(ty - y0) + 0.5
                     let r = 0.55 + Double(h % 5) * 0.08
                     p.circle(lx + 0.12, ly + 0.16, r, fill: Palette.shadow)
-                    p.circle(lx, ly, r, fill: h % 2 == 0 ? Palette.woodsDark : Palette.grassDark.darker(0.1))
-                    p.circle(lx - 0.15, ly - 0.15, r * 0.55, fill: Palette.woods.lighter(0.06))
+                    p.circle(lx, ly, r * 0.8, fill: Palette.woodsDark)
+                    for j in 0..<7 {
+                        let a = Double(j) * .pi * 2 / 7
+                        p.circle(lx + cos(a) * r * 0.56, ly + sin(a) * r * 0.48,
+                                 r * 0.44, fill: j < 4 ? Palette.woods : Palette.woodsDark)
+                    }
+                    p.circle(lx - r * 0.22, ly - r * 0.2, r * 0.53, fill: Palette.grassDark)
                 }
             }
         }
@@ -108,8 +139,8 @@ public enum ChunkArt {
                 let kind = k(tx, ty)
                 guard kind.walkableBase || kind == .fence else { continue }
                 let lx = Double(tx - x0), ly = Double(ty - y0)
-                if isWallish(k(tx, ty - 1)) { p.rect(lx, ly, 1, 0.16, fill: Palette.shadow.alpha(0.16)) }
-                if isWallish(k(tx - 1, ty)) { p.rect(lx, ly, 0.1, 1, fill: Palette.shadow.alpha(0.12)) }
+                if isWallish(k(tx, ty - 1)) { p.rect(lx, ly, 1, 0.16, fill: Palette.shadow.alpha(0.2)) }
+                if isWallish(k(tx - 1, ty)) { p.rect(lx, ly, 0.1, 1, fill: Palette.shadow.alpha(0.15)) }
             }
         }
         // 3. Walls with a low south face (cinder block hint).
@@ -136,7 +167,8 @@ public enum ChunkArt {
                 if (tx * 7 + ty * 3) % 5 == 0 { p.line([(lx + 0.15, ly + 0.5), (lx + 0.85, ly + 0.5)], color: top.darker(0.035), lw: 0.03) }
                 if southOpen {
                     p.rect(lx, ly + 0.7, 1, 0.3, fill: Palette.wallEdge)
-                    p.line([(lx, ly + 0.7), (lx + 1, ly + 0.7)], color: Palette.wallEdge.darker(0.08), lw: 0.02)
+                    p.rect(lx, ly + 0.7, 1, 0.035, fill: Palette.wallEdge.lighter(0.2))
+                    p.line([(lx, ly + 0.99), (lx + 1, ly + 0.99)], color: Palette.wallEdge.darker(0.08), lw: 0.02)
                     let off = (ty % 2 == 0) ? 0.25 : 0.75
                     p.line([(lx + off, ly + 0.72), (lx + off, ly + 0.98)], color: Palette.wallEdge.darker(0.12), lw: 0.025)
                 }
@@ -150,7 +182,10 @@ public enum ChunkArt {
                 let vertical = k(tx, ty - 1) == .fence || k(tx, ty + 1) == .fence
                 if horiz { p.line([(lx, ly + 0.5), (lx + 1, ly + 0.5)], color: Palette.slate.alpha(0.75), lw: 0.06) }
                 if vertical { p.line([(lx + 0.5, ly), (lx + 0.5, ly + 1)], color: Palette.slate.alpha(0.75), lw: 0.06) }
-                if (tx + ty) % 3 == 0 { p.circle(lx + 0.5, ly + 0.5, 0.1, fill: Palette.slate, shadow: true) }
+                if (tx + ty) % 3 == 0 {
+                    p.rect(lx + 0.43, ly + 0.23, 0.14, 0.62, r: 0.035, fill: Palette.slate, shadow: true)
+                    p.rect(lx + 0.44, ly + 0.23, 0.12, 0.065, r: 0.025, fill: Palette.slate.lighter(0.25))
+                }
                 if horiz { p.line([(lx, ly + 0.36), (lx + 1, ly + 0.36)], color: Palette.slate.alpha(0.25), lw: 0.03) }
             }
         }
